@@ -1,0 +1,45 @@
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.3.xsd">
+
+    <!--changeSet id="1" author="rafi.isaharov">
+        <sql>
+
+            ALTER TABLE routes ADD COLUMN timestamp TIMESTAMP;
+        </sql>
+    </changeSet-->
+
+    <!--changeSet id="2" author="rafi.isaharov">
+        <sql>
+            ALTER TABLE routes ALTER COLUMN timestamp SET DEFAULT NOW();
+        </sql>
+    </changeSet-->
+
+    <changeSet id="3" author="rafi.isaharov">
+        <sql splitStatements="false">
+            <![CDATA[
+            -- Create a function to update timestamp on every update
+            CREATE OR REPLACE FUNCTION update_timestamp()
+            RETURNS TRIGGER AS $$
+            BEGIN
+                NEW.timestamp = NOW();
+            RETURN NEW;
+            END;
+            $$ LANGUAGE plpgsql;
+            ]]>
+        </sql>
+    </changeSet>
+
+    <changeSet id="4" author="rafi.isaharov">
+        <sql splitStatements="false">
+            <![CDATA[
+            -- Create a trigger to execute update_timestamp function on every update
+            CREATE TRIGGER update_routes_timestamp
+                BEFORE UPDATE ON routes
+                FOR EACH ROW
+                EXECUTE FUNCTION update_timestamp();
+            ]]>
+        </sql>
+    </changeSet>
+
+</databaseChangeLog>
