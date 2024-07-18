@@ -105,10 +105,10 @@
             <groupId>io.quarkus</groupId>
             <artifactId>quarkus-liquibase</artifactId>
         </dependency>
-        <!--<dependency>
+        <dependency>
             <groupId>io.quarkus</groupId>
             <artifactId>quarkus-jdbc-oracle</artifactId>
-        </dependency>-->
+        </dependency>
         <dependency>
             <groupId>org.apache.camel.quarkus</groupId>
             <artifactId>camel-quarkus-jms</artifactId>
