@@ -1,0 +1,94 @@
+version: '3.8'
+
+services:
+
+  artemis:
+    image: panos91/artemis-adoptopenjdk-11:latest
+    container_name: artemis
+    environment:
+      - ARTEMIS_USER=admin
+      - ARTEMIS_PASSWORD=admin
+      - ANONYMOUS_LOGIN=true
+    ports:
+      - "61616:61616"
+      - "1883:1883"
+      - "8161:8161" 
+  
+  keycloak_esb:
+    image: quay.io/keycloak/keycloak:latest
+    container_name: keycloak_esb
+    ports:
+      - "8082:8080"
+    environment:
+      - KEYCLOAK_ADMIN=admin
+      - KEYCLOAK_ADMIN_PASSWORD=admin
+    command: start-dev
+    volumes:
+      - keycloak_data:/opt/jboss/keycloak/standalone/data
+  pgdb:
+    image: postgres
+    container_name: pgdb
+    restart: always
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=esb_db_main
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    command: 'postgres --max_prepared_transactions=100'
+
+  pgdb_test:
+    image: postgres
+    container_name: pgdb_test
+    restart: always
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=esb_db_test
+    ports:
+      - "5433:5432"
+    volumes:
+      - pgdata_test:/var/lib/postgresql/data
+    command: 'postgres --max_prepared_transactions=100'
+    
+  pgadmin:
+    container_name: pgadmin
+    image: dpage/pgadmin4
+    restart: always
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@admin.com
+      PGADMIN_DEFAULT_PASSWORD: root
+    ports:
+      - "5050:80"
+    depends_on: 
+      - pgdb
+      - pgdb_test
+
+  ibmmq:
+    image: ibmcom/mq:latest
+    container_name: mqserver
+    environment:
+      - LICENSE=accept
+      - MQ_QMGR_NAME=QM1
+      - MQ_APP_PASSWORD=passw0rd
+      - MQ_ENABLE_EMBEDDED_WEB_SERVER=true
+      - MQ_ADMIN_PASSWORD=passw0rd
+      - MQ_TLS_KEYSTORE=/etc/mqm/certs/server_keystore.kdb
+      - MQ_TLS_TRUSTSTORE=/etc/mqm/certs/server_truststore.kdb
+      - MQ_TLS_PASSPHRASE=serverpw
+
+    volumes:
+      - mqdata:/var/mqm
+      - /mnt/c/ESB/IBM/cert:/etc/mqm/certs
+
+    ports:
+      - "1414:1414"
+      - "9443:9443" #user:admin password:passw0rd
+
+volumes:
+  pgdata:
+  pgdata_test:
+  keycloak_data:
+  mqdata:
