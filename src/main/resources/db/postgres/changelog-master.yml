@@ -2,8 +2,6 @@ databaseChangeLog:
   - include:
       file: db/postgres/changelog.001.sql
   - include:
-      file: db/postgres/changelog.002.xml
+      file: db/postgres/changelog.002.sql
   - include:
       file: db/postgres/changelog.003.sql
-  - include:
-      file: db/postgres/changelog.004.sql

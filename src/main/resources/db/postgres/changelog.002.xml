@@ -4,7 +4,6 @@
 
     <!--changeSet id="1" author="rafi.isaharov">
         <sql>
-
             ALTER TABLE routes ADD COLUMN timestamp TIMESTAMP;
         </sql>
     </changeSet-->
