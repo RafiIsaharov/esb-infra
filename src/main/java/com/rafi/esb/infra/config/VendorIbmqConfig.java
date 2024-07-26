@@ -2,9 +2,11 @@ package com.rafi.esb.infra.config;
 
 
 import jakarta.enterprise.context.ApplicationScoped;
+import lombok.Getter;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 
 import java.util.Optional;
+@Getter
 @ApplicationScoped
 public class VendorIbmqConfig {
     @ConfigProperty(name = "finastra.camel.vendor.ibmmq.user")
@@ -30,37 +32,4 @@ public class VendorIbmqConfig {
     @ConfigProperty(name = "finastra.camel.vendor.ibmmq.trustStorePassword")
     String trustStorePassword;
 
-    public Optional<String> getUsername() {
-        return username;
-    }
-    public Optional<String> getPassword() {
-        return password;
-    }
-    public String getHostName() {
-        return hostName;
-    }
-    public int getPort() {
-        return port;
-    }
-    public String getQueueManager() {
-        return queueManager;
-    }
-    public String getChannel() {
-        return channel;
-    }
-    public Optional<String> getCipher() {
-        return cipher;
-    }
-    public Optional<String> getKeyStorePath() {
-        return keyStorePath;
-    }
-    public String getKeyStorePassword() {
-        return keyStorePassword;
-    }
-    public Optional<String> getTrustStorePath() {
-        return trustStorePath;
-    }
-    public String getTrustStorePassword() {
-        return trustStorePassword;
-    }
 }
