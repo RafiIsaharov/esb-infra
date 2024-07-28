@@ -1,7 +1,7 @@
 
 package com.rafi.esb.infra.components.ibmmq;
 
-import com.rafi.esb.infra.config.VendorIbmqConfig;
+import com.rafi.esb.infra.config.VendorIbmMqConfig;
         import com.ibm.mq.jakarta.jms.MQQueueConnectionFactory;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
@@ -29,27 +29,27 @@ public class VendorIbmMQConnectionFactoryConfig extends MQQueueConnectionFactory
     }
     @Inject
     public VendorIbmMQConnectionFactoryConfig(
-            VendorIbmqConfig vendorIbmqConfig) throws JMSException, KeyStoreException, IOException, CertificateException, NoSuchAlgorithmException, UnrecoverableKeyException, KeyManagementException {
-        setHostName(vendorIbmqConfig.getHostName());
-        setPort(vendorIbmqConfig.getPort());
-        setQueueManager(vendorIbmqConfig.getQueueManager());
-        setChannel(vendorIbmqConfig.getChannel());
+            VendorIbmMqConfig vendorIbmMqConfig) throws JMSException, KeyStoreException, IOException, CertificateException, NoSuchAlgorithmException, UnrecoverableKeyException, KeyManagementException {
+        setHostName(vendorIbmMqConfig.getHostName());
+        setPort(vendorIbmMqConfig.getPort());
+        setQueueManager(vendorIbmMqConfig.getQueueManager());
+        setChannel(vendorIbmMqConfig.getChannel());
         setTransportType(WMQ_CM_CLIENT);
-        Optional<String> username = vendorIbmqConfig.getUsername();
+        Optional<String> username = vendorIbmMqConfig.getUsername();
         // User name and password
         if (username.isPresent() && !username.get().isEmpty()) {
             setStringProperty(USERID, username.get());
         }
-        Optional<String> password = vendorIbmqConfig.getPassword();
+        Optional<String> password = vendorIbmMqConfig.getPassword();
         if (password.isPresent() && !password.get().isEmpty()) {
             setStringProperty(PASSWORD, password.get());
         }
-        Optional<String> cipher = vendorIbmqConfig.getCipher();
-        Optional<String> trustStorePath = vendorIbmqConfig.getTrustStorePath();
+        Optional<String> cipher = vendorIbmMqConfig.getCipher();
+        Optional<String> trustStorePath = vendorIbmMqConfig.getTrustStorePath();
         // Create a custom SSL socket factory, condition for SSL: Cipher is present
         if (cipher.isPresent() && !cipher.get().isEmpty() && trustStorePath.isPresent() && !trustStorePath.get().isEmpty()){
-            configureSSLContext(trustStorePath.get(), vendorIbmqConfig.getTrustStorePassword(),
-                    vendorIbmqConfig.getKeyStorePath(), vendorIbmqConfig.getKeyStorePassword(),
+            configureSSLContext(trustStorePath.get(), vendorIbmMqConfig.getTrustStorePassword(),
+                    vendorIbmMqConfig.getKeyStorePath(), vendorIbmMqConfig.getKeyStorePassword(),
                     cipher.get());
         }
     }

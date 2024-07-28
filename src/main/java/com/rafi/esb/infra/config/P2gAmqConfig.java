@@ -10,19 +10,19 @@ import java.util.Optional;
 @Getter
 @ApplicationScoped
 public class P2gAmqConfig {
-    @ConfigProperty(name = "finastra.camel.p2g.amq.username")
+    @ConfigProperty(name = "esb.infra.p2g.amq.username")
     String username;
-    @ConfigProperty(name = "finastra.camel.p2g.amq.password")
+    @ConfigProperty(name = "esb.infra.p2g.amq.password")
     String password;
-    @ConfigProperty(name = "finastra.camel.p2g.amq.brokerURL")
+    @ConfigProperty(name = "esb.infra.p2g.amq.brokerURL")
     String brokerURL;
-    @ConfigProperty(name = "finastra.camel.p2g.amq.keyStorePath", defaultValue = "")
+    @ConfigProperty(name = "esb.infra.p2g.amq.keyStorePath", defaultValue = "")
     Optional<String> keyStorePath;
-    @ConfigProperty(name = "finastra.camel.p2g.amq.keyStorePassword")
+    @ConfigProperty(name = "esb.infra.p2g.amq.keyStorePassword")
     String keyStorePassword;
-    @ConfigProperty(name = "finastra.camel.p2g.amq.trustStorePath", defaultValue = "")
+    @ConfigProperty(name = "esb.infra.p2g.amq.trustStorePath", defaultValue = "")
     Optional<String> trustStorePath;
-    @ConfigProperty(name = "finastra.camel.p2g.amq.trustStorePassword")
+    @ConfigProperty(name = "esb.infra.p2g.amq.trustStorePassword")
     String trustStorePassword;
 
 }
