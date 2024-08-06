@@ -20,13 +20,13 @@ public class BaseEsbRoute extends RouteBuilder {
         log.debug("Starting route configuration in BaseEsbRoute :");
         setupRoute();
     }
-    public void setupRoute() {
+    private void setupRoute() {
         exceptionHandler();
        for (BaseRouteConfig config : BaseRouteConfig.values())
            if (Boolean.parseBoolean(getContext().resolvePropertyPlaceholders(config.getProperty())))
-               config.configureRoute(this, this.jsonDataFormat);
+               config.configureRoute(this, jsonDataFormat);
     }
-    public void exceptionHandler() {
+    private void exceptionHandler() {
         onException(HttpOperationFailedException.class)
                 .process(exchange -> {
                     HttpOperationFailedException exception = exchange.getProperty(Exchange.EXCEPTION_CAUGHT,
