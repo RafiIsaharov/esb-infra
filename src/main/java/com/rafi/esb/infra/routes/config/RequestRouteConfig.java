@@ -2,8 +2,7 @@ package com.rafi.esb.infra.routes.config;
 
 import com.rafi.esb.infra.routes.processors.HeaderProcessor;
 import com.rafi.esb.infra.routes.handlers.RequestRouteHandlers;
-import com.rafi.esb.infra.routes.processors.SetJsonParentsProcessor;
-import com.rafi.esb.infra.routes.processors.UpdateJsonProcessor;
+import com.rafi.esb.infra.routes.processors.JsonSplitProcessor;
 import org.apache.camel.Exchange;
 import org.apache.camel.builder.RouteBuilder;
 import org.apache.camel.model.dataformat.JsonLibrary;
@@ -148,6 +147,7 @@ public enum RequestRouteConfig implements RouteProperties {
     protected void routeFromSftpToVendorAmq(RouteBuilder builder, String sftpComponent) {
         String splitAlgorithm = builder.getContext().resolvePropertyPlaceholders(resolveProperty(SFTP_SPLIT_ALGO));
         String splitTag = builder.getContext().resolvePropertyPlaceholders(resolveProperty(SFTP_SPLIT_TAG));
+        String updateTags = builder.getContext().resolvePropertyPlaceholders(resolveProperty(SFTP_UPDATE_TAGS));
 
         builder.from(sftpComponent)
                 .log("File content: ${body} \n")
@@ -164,16 +164,15 @@ public enum RequestRouteConfig implements RouteProperties {
                     .to(SEDA_CAMEL.formatted(resolveProperty(SFTP_ADDRESS),
                             resolveProperty(REQUEST_VENDOR_AMQ_QUEUE_NAME)))
                 .endChoice()
-                .when(exchange -> splitAlgorithm.equals("xmltag"))
+                .when(exchange -> splitAlgorithm.equals("xmlTag"))
                     .split().tokenizeXML(splitTag,"*").streaming()
                     .to(SEDA_CAMEL.formatted(resolveProperty(SFTP_ADDRESS),
                             resolveProperty(REQUEST_VENDOR_AMQ_QUEUE_NAME)))
                     .endChoice()
-                .when(exchange -> splitAlgorithm.equals("jsontag"))
-                    .setProperty("originalBody", simple("${body}"))
+                .when(exchange -> splitAlgorithm.equals("jsonTag"))
+                    .setProperty("origBody", simple("${body}"))
                     .split().jsonpath(splitTag).streaming()
-                    .process (new SetJsonParentsProcessor(splitTag))
-                    .process(new UpdateJsonProcessor("$.numberOfTransactions", "1"))
+                    .process (new JsonSplitProcessor(splitTag, updateTags))
                     .marshal().json(JsonLibrary.Jackson)
                     .to(SEDA_CAMEL.formatted(resolveProperty(SFTP_ADDRESS),
                             resolveProperty(REQUEST_VENDOR_AMQ_QUEUE_NAME)))

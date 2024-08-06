@@ -53,8 +53,9 @@ public interface RouteProperties {
     String SFTP_PRIVATE_KEY_FILE = "esb.infra.p2g.sftp.privateKeyFile";
     String SFTP_FROM_FOLDER = "esb.infra.p2g.sftp.fromFolder";
     String SFTP_ARCHIVE_FOLDER = "esb.infra.p2g.sftp.archiveFolder";
-    String SFTP_SPLIT_ALGO = "esb.infra.p2g.sftp.splitalgo";
-    String SFTP_SPLIT_TAG = "esb.infra.p2g.sftp.splittag";
+    String SFTP_SPLIT_ALGO = "esb.infra.p2g.sftp.splitAlgo";
+    String SFTP_SPLIT_TAG = "esb.infra.p2g.sftp.splitTag";
+    String SFTP_UPDATE_TAGS = "esb.infra.p2g.sftp.updateTags";
 
     default String resolveProperty(String property) {
         return "{{%s}}".formatted(property);
