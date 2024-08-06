@@ -1,6 +1,7 @@
 package com.rafi.esb.infra.handlers.transformation;
 
 
+import com.rafi.esb.infra.handlers.transformation.services.TransformationServiceInterface;
 import org.apache.camel.Exchange;
 
 public interface TransformationInterface {
@@ -10,4 +11,6 @@ public interface TransformationInterface {
     String DEFAULT = "default";
     @SuppressWarnings("unused")
     void doTransform(Exchange exchange);
+    @SuppressWarnings("unused")
+    void addTransformationService(TransformationServiceInterface newTransformationService);
 }

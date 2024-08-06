@@ -8,4 +8,8 @@ public class LowercaseTransformationService implements TransformationServiceInte
     public String transform(TransformMessage transformMessage) {
         return transformMessage.message().toLowerCase();
     }
+    @Override
+    public String getTransformationMethod(){
+        return LOWERCASE;
+    }
 }

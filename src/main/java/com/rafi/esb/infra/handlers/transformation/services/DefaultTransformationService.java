@@ -8,4 +8,8 @@ public class DefaultTransformationService implements TransformationServiceInterf
     public String transform(TransformMessage transformMessage) {
         return transformMessage.message();
     }
+    @Override
+    public String getTransformationMethod(){
+        return DEFAULT;
+    }
 }

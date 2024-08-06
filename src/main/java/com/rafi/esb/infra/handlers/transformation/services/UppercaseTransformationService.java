@@ -8,5 +8,9 @@ public class UppercaseTransformationService implements TransformationServiceInte
     public String transform(TransformMessage transformMessage) {
         return transformMessage.message().toUpperCase();
     }
+    @Override
+    public String getTransformationMethod(){
+        return UPPERCASE;
+    }
 }
 

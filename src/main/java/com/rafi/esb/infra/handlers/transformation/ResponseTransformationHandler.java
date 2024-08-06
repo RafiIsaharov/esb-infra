@@ -10,7 +10,7 @@ import org.eclipse.microprofile.config.inject.ConfigProperty;
 @ApplicationScoped
 public class ResponseTransformationHandler implements TransformationInterface{
     private final TransformationService transformationService;
-    private final String transformationMethod;
+    private String transformationMethod;
 
     public ResponseTransformationHandler(TransformationService transformationService,
                                          @ConfigProperty(name = TRANSFORMING_METHOD_RESPONSE,
@@ -22,8 +22,9 @@ public class ResponseTransformationHandler implements TransformationInterface{
     public void doTransform(Exchange exchange) {
         transformationService.transform(exchange,transformationMethod);
     }
-
+    @Override
     public void addTransformationService(TransformationServiceInterface newTransformationService){
-        transformationService.addTransformationService(transformationMethod,newTransformationService);
+        transformationMethod = newTransformationService.getTransformationMethod();
+        transformationService.addTransformationService(newTransformationService);
     }
 }

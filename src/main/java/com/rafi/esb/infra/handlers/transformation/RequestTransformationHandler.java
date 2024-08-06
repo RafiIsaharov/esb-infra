@@ -11,7 +11,7 @@ import org.eclipse.microprofile.config.inject.ConfigProperty;
 public class RequestTransformationHandler implements TransformationInterface{
 
     private final TransformationService transformationService;
-    private final String transformationMethod;
+    private String transformationMethod;
 
     public RequestTransformationHandler(TransformationService transformationService,
                                         @ConfigProperty(name = TRANSFORMING_METHOD_REQUEST,
@@ -23,8 +23,9 @@ public class RequestTransformationHandler implements TransformationInterface{
     public void doTransform(Exchange exchange) {
         transformationService.transform(exchange,transformationMethod);
     }
-
+    @Override
     public void addTransformationService(TransformationServiceInterface newTransformationService){
-        transformationService.addTransformationService(transformationMethod,newTransformationService);
+        transformationMethod = newTransformationService.getTransformationMethod();
+        transformationService.addTransformationService(newTransformationService);
     }
 }
