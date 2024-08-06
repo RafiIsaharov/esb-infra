@@ -72,19 +72,22 @@ public class JsonProcessor {
 
         String[] pathElements = jsonPath.replace("$.", "").split("\\.");
         JsonNode currentNode = root;
-        for (int i = 0; i < pathElements.length - 1; i++) {
+        int elementsLength = pathElements.length;
+        for (int i = 0; i < elementsLength - 1; i++) {
             currentNode = currentNode.path(pathElements[i]);
         }
 
         // Update the value
         if (currentNode instanceof ObjectNode) {
+            String lastElement = pathElements[elementsLength - 1];
             if (newValue instanceof String) {
-                ((ObjectNode) currentNode).put(pathElements[pathElements.length - 1], newValue.toString());
+                ((ObjectNode) currentNode).put(lastElement, newValue.toString());
+            } else if (newValue instanceof JsonNode){
+                ((ObjectNode) currentNode).set(lastElement, (JsonNode) newValue);
             } else {
-                ((ObjectNode) currentNode).put(pathElements[pathElements.length - 1], (JsonNode) newValue);
+                throw new IllegalArgumentException("Unsupported value type");
             }
         }
-
         return root;
     }
 }
