@@ -12,6 +12,14 @@ import static org.apache.camel.builder.Builder.simple;
 import static org.apache.camel.builder.endpoint.StaticEndpointBuilders.log;
 
 public enum RequestRouteConfig implements RouteProperties {
+    REQUEST_ROUTE_TEST(ENABLE_ROUTE_TEST) {
+        @Override
+        public void configureRoute(RouteBuilder builder, RequestRouteHandlers requestRouteHandlers) {
+            builder.from("seda:test")
+                    .routeId("test")
+                    .log("body: ${body}");
+        }
+    },
     ROUTE_REQUEST_FROM_P2G_TO_VENDOR(ENABLE_ROUTE_REQUEST_P2G_TO_VENDOR) {
         @Override
         public void configureRoute(RouteBuilder builder, RequestRouteHandlers requestRouteHandlers) {

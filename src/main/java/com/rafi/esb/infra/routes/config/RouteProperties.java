@@ -2,6 +2,7 @@ package com.rafi.esb.infra.routes.config;
 
 public interface RouteProperties {
     //routes
+    String ENABLE_ROUTE_TEST = "esb.infra.route.request.enable.test";
     String ENABLE_TIMER_TO_VENDOR_REQUEST_BASIC_AUTH_SERVICE = "esb.infra.route.request.enable.timerToVendorBasicAuthService";
     String ENABLE_TIMER_TO_VENDOR_REQUEST_AUTH_SERVICE = "esb.infra.route.request.enable.timerToVendorAuthService";
     String ENABLE_TIMER_TO_VENDOR_RESPONSE_AUTH_SERVICE = "esb.infra.route.response.enable.timerToVendorAuthService";
